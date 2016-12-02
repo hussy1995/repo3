@@ -1,0 +1,107 @@
+<?php
+include './header.php';
+?>
+
+<?php 
+include './header.php';
+?>
+<?php
+include './connect.php';
+$mid=$_REQUEST['mid'];
+$query="select * from member where mid=$mid";
+$result=  mysqli_query($link, $query);
+foreach ($result as $value){
+    
+    $mname=$value['mname'];
+    $maddress=$value['maddress'];
+    $memail=$value['memail'];
+}
+?>
+
+<link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+<script src="bootstrap/js/bootstrap.js" type="text/javascript"></script>
+<h2 class="label label-default" style="font-size: 1.2em;">Edit Member</h2><br/><br/>
+<br/><br/>
+<script src='scripts/jquery-1.7.2.min.js' type='text/javascript'></script>
+<script src='scripts/sfm_validatorv7.js' type='text/javascript'></script>
+<div id='Edit_Member_errorloc' class='error_strings' style=''></div>
+<style type='text/css'>
+.sfm_float_error_box
+{
+    font-family:Verdana;
+    font-size:12px;
+    color:#eeeeee;
+    background:none repeat scroll 0 0 #333333;
+    border:0;
+    border-radius:4px;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    box-shadow:0 0 4px #333;
+    border:none;
+}
+.sfm_close_box
+{
+    font-family:Verdana;
+    font-size:12px;
+    color:#eeeeee;
+}
+</style>
+<form name="Edit_Member" action="edit_member.php?mid=<?php echo $mid?>" method="post">
+    <table class="table table-hover table-striped">
+        <tr>
+            <th>Current Member</th>
+            <td><input type="text" name="mname" value="<?php echo $mname; ?>" class="form-control" style="width: auto;"/></td>
+        </tr>
+        
+        <tr>
+            <th>Current Address</th>
+            <td><input type="text" name="maddress" value="<?php echo $maddress; ?>" class="form-control" style="width: auto;"/></td>
+            
+        </tr>
+        <tr>
+            <th>Current Email</th>
+            <td><input type="text" name="memail" value="<?php echo $memail; ?>" class="form-control" style="width: auto;"/><br></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" name="submit" value="Update" class="btn btn-warning floatright"/>
+            </td>
+        </tr>
+    </table>
+</form><div class='sfm_cr_box' style='padding:3px; width:350px;cursor:default'>Web form built with <a style='text-decoration:none;' rel='nofollow' href='http://www.simfatic.com'>Simfatic Forms order form builder</a>.</div><script type='text/javascript'>
+// <![CDATA[
+var Edit_MemberValidator = new Validator("Edit_Member");
+Edit_MemberValidator.addValidation("mname",{required:true,message:"Please fill in mname"} );
+Edit_MemberValidator.addValidation("mname",{alpha_s:true,message:"The input for mname should be a valid alphabetic value"} );
+Edit_MemberValidator.addValidation("maddress",{required:true,message:"Please fill in maddress"} );
+Edit_MemberValidator.addValidation("maddress",{alnum_s:true,message:"The input for maddress should be a valid alpha-numeric value"} );
+Edit_MemberValidator.addValidation("memail",{required:true,message:"Please fill in memail"} );
+Edit_MemberValidator.addValidation("memail",{email:true,message:"The input for memail should be a valid email value"} );
+
+// ]]>
+</script>
+
+
+<?php
+
+if (isset($_REQUEST['submit'])){
+    $mid=$_REQUEST['mid'];
+    $mname=$_REQUEST['mname'];
+    $maddress=$_REQUEST['maddress'];
+    $memail=$_REQUEST['memail'];
+    $query="update member set mname='$mname',maddress='$maddress',memail='$memail' where mid=$mid";
+    
+    if (mysqli_query($link, $query)){
+        header("location:view_member.php");
+    }
+    else
+    {
+        echo "Error : " . mysqli_error($link);
+    }
+    
+}
+
+?>
+<?php 
+include './footer.php';
+?>
